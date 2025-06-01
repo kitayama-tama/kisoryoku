@@ -14,6 +14,9 @@
             --dark-gray: #7f7f7f;
             --success-color: #2ecc71;
             --warning-color: #f39c12;
+            --primary-color: #4361ee;
+            --secondary-color: #3a0ca3;
+            --accent-color: #f72585;
         }
         
         body {
@@ -29,39 +32,46 @@
             max-width: 1000px;
             margin: 0 auto;
             background: white;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             padding: 30px;
         }
         
         h1 {
             text-align: center;
-            color: #2c3e50;
+            color: var(--secondary-color);
             margin-bottom: 30px;
             padding-bottom: 15px;
             border-bottom: 2px solid #ecf0f1;
+            font-size: 2rem;
+            background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         
         h2 {
-            color: #2c3e50;
+            color: var(--secondary-color);
             margin-top: 30px;
             font-size: 1.5em;
+            border-left: 5px solid var(--primary-color);
+            padding-left: 10px;
         }
         
         h3 {
-            color: #2c3e50;
+            color: var(--secondary-color);
             font-size: 1.2em;
             margin-top: 20px;
         }
         
         .overall-progress {
-            background: linear-gradient(90deg, #3498db, #2ecc71);
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
             color: white;
             padding: 15px;
             border-radius: 8px;
             margin-bottom: 20px;
             text-align: center;
             font-weight: bold;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
         }
         
         .category-status {
@@ -80,6 +90,7 @@
             text-align: center;
             font-weight: bold;
             transition: all 0.3s;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
         }
         
         .status-card.completed {
@@ -108,7 +119,7 @@
         .progress-bar {
             height: 100%;
             border-radius: 5px;
-            background: linear-gradient(90deg, #3498db, #2ecc71);
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
             width: 0%;
             transition: width 0.5s ease;
             position: relative;
@@ -140,6 +151,7 @@
             font-weight: 500;
             font-size: 0.95em;
             position: relative;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
         
         .pill-btn.action {
@@ -171,15 +183,18 @@
             align-items: center;
             justify-content: center;
             font-size: 12px;
+            box-shadow: 0 2px 3px rgba(0,0,0,0.2);
         }
         
         .pill-btn:hover {
             opacity: 0.9;
             transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
         
         .pill-btn.active {
             box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transform: translateY(-2px);
         }
         
         .question-card {
@@ -190,6 +205,11 @@
             margin-bottom: 20px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
             position: relative;
+            transition: all 0.3s;
+        }
+        
+        .question-card:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
         
         .question-card::before {
@@ -252,9 +272,9 @@
         }
         
         .rating-btn.selected {
-            background-color: #2c3e50;
+            background-color: var(--primary-color);
             color: white;
-            border-color: #2c3e50;
+            border-color: var(--primary-color);
         }
         
         .rating-labels {
@@ -275,6 +295,13 @@
             min-height: 80px;
             margin-top: 10px;
             box-sizing: border-box;
+            transition: all 0.3s;
+        }
+        
+        textarea:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
+            outline: none;
         }
         
         .action-buttons {
@@ -292,15 +319,25 @@
             cursor: pointer;
             font-weight: bold;
             transition: all 0.3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
         }
         
         .btn-primary {
-            background-color: #2c3e50;
+            background-color: var(--primary-color);
             color: white;
         }
         
         .btn-primary:hover {
-            background-color: #1a252f;
+            background-color: #3a56e8;
         }
         
         .btn-secondary {
@@ -320,6 +357,15 @@
             background-color: #27ae60;
         }
         
+        .btn-accent {
+            background-color: var(--accent-color);
+            color: white;
+        }
+        
+        .btn-accent:hover {
+            background-color: #e5177b;
+        }
+        
         .hidden {
             display: none;
         }
@@ -333,6 +379,12 @@
             border-left: 4px solid;
             padding: 15px;
             margin-bottom: 15px;
+            border-radius: 0 5px 5px 0;
+            transition: all 0.3s;
+        }
+        
+        .strength-card:hover {
+            transform: translateX(5px);
         }
         
         .strength-card.action {
@@ -350,6 +402,7 @@
         .strength-title {
             font-weight: bold;
             margin-bottom: 10px;
+            color: var(--secondary-color);
         }
         
         #radarChartContainer {
@@ -364,15 +417,17 @@
             padding: 15px;
             border-radius: 5px;
             margin-top: 20px;
+            border-left: 4px solid var(--primary-color);
         }
         
         .summary-text {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             color: white;
             padding: 25px;
             border-radius: 10px;
             margin: 20px 0;
             line-height: 1.8;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
         
         .summary-text h3 {
@@ -386,6 +441,12 @@
             padding: 15px;
             margin-bottom: 15px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-radius: 0 5px 5px 0;
+            transition: all 0.3s;
+        }
+        
+        .episode-card:hover {
+            transform: translateX(5px);
         }
         
         .episode-card.thinking {
@@ -399,12 +460,55 @@
         .episode-title {
             font-weight: bold;
             margin-bottom: 10px;
-            color: #2c3e50;
+            color: var(--secondary-color);
         }
         
         .episode-content {
             color: #555;
             line-height: 1.6;
+        }
+        
+        /* プロンプト生成セクション */
+        .prompt-section {
+            margin: 30px 0;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            border-left: 5px solid var(--accent-color);
+        }
+        
+        .prompt-container {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+            border: 1px solid var(--medium-gray);
+            position: relative;
+        }
+        
+        .prompt-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .copy-notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--success-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 1000;
+        }
+        
+        .copy-notification.show {
+            opacity: 1;
         }
         
         @media print {
@@ -425,7 +529,11 @@
         
         @media (max-width: 768px) {
             .container {
-                padding: 20px;
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
             }
             
             .action-buttons {
@@ -443,6 +551,23 @@
             
             #radarChartContainer {
                 height: 400px;
+            }
+            
+            .status-card {
+                min-width: 100%;
+            }
+            
+            .rating-container {
+                flex-wrap: wrap;
+            }
+            
+            .rating-btn {
+                width: 30%;
+                margin-bottom: 5px;
+            }
+            
+            .prompt-actions {
+                flex-direction: column;
             }
         }
     </style>
@@ -533,16 +658,33 @@
             <div id="jobMatchingSection">
                 <div id="jobMatchingResults"></div>
             </div>
+            
+            <div class="prompt-section no-print">
+                <h3><i class="fas fa-magic"></i> 自己PR文作成サポート</h3>
+                <p>診断結果から、あなたの強みを活かした自己PR文を作成するためのプロンプトを生成できます。</p>
+                <button class="btn btn-accent" id="generatePrompt">プロンプトを生成</button>
+                
+                <div class="prompt-container hidden" id="promptContainer">
+                    <div id="promptContent"></div>
+                    <div class="prompt-actions">
+                        <button class="btn btn-primary" id="copyPrompt">プロンプトをコピー</button>
+                        <button class="btn btn-secondary" id="viewPromptDetails">詳細を見る</button>
+                    </div>
+                </div>
+            </div>
+            
             <h3>具体的なエピソード集</h3>
             <div id="episodeCollection"></div>
             
             <div class="action-buttons no-print">
                 <button class="btn btn-secondary" id="backToQuestions">追加診断を行う</button>
                 <button class="btn btn-primary" id="printResults">結果を印刷</button>
-                <button class="btn btn-success" id="saveCompleteResults">完全版結果を保存</button>
+                <button class="btn btn-success" id="saveCompleteResults">結果をテキスト保存</button>
             </div>
         </div>
     </div>
+
+    <div class="copy-notification" id="copyNotification">クリップボードにコピーしました！</div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <script>
@@ -551,7 +693,8 @@
             currentCategory: null,
             responses: {},
             completedCategories: new Set(),
-            radarChart: null
+            radarChart: null,
+            promptData: null
         };
 
         // 社会人基礎力の質問データ（経済産業省定義）
@@ -565,7 +708,6 @@
                         "name": "主体性",
                         "description": "物事に進んで取り組む力",
                         "questions": [
-                            
                             {
                                 "questionText": "新しい課題や問題に自ら気付き、進んで取り組む",
                                 "placeholderText": "例：サークルの新歓活動で、例年の課題だった参加者数の伸び悩みに気づき、SNSを活用した新しい広報戦略を提案・実行しました。"
@@ -592,7 +734,6 @@
                         "name": "働きかけ力",
                         "description": "他人に働きかけ巻き込む力",
                         "questions": [
-                            
                             {
                                 "questionText": "チームの目標達成のために、他者に働きかける",
                                 "placeholderText": "例：学園祭の模擬店で売上目標達成のため、役割分担や声かけ方法をメンバーに提案し、協力を促しました。"
@@ -619,7 +760,6 @@
                         "name": "実行力",
                         "description": "目標を設定し確実に行動する力",
                         "questions": [
-                            
                             {
                                 "questionText": "明確な目標を設定し、計画的に行動する",
                                 "placeholderText": "例：資格試験合格という目標に対し、3ヶ月間の学習計画を立て、毎日2時間の勉強時間を確保して実行しました。"
@@ -653,7 +793,6 @@
                         "name": "課題発見力",
                         "description": "現状を分析し目的や課題を明らかにする力",
                         "questions": [
-                            
                             {
                                 "questionText": "現状の問題点や改善点を見つけ出す",
                                 "placeholderText": "例：所属するテニスサークルの部員減少という問題に対し、新入生へのアプローチ方法やイベント内容に改善点があることを見つけました。"
@@ -680,7 +819,6 @@
                         "name": "計画力",
                         "description": "課題の解決に向けたプロセスを明らかにし準備する力",
                         "questions": [
-                            
                             {
                                 "questionText": "課題解決のための具体的なステップを考える",
                                 "placeholderText": "例：研究テーマ達成のため、文献調査、実験準備、データ収集、分析、論文執筆という具体的なステップを計画しました。"
@@ -707,7 +845,6 @@
                         "name": "創造力",
                         "description": "新しい価値を生み出す力",
                         "questions": [
-                           
                             {
                                 "questionText": "既存の枠組みにとらわれず新しい発想をする",
                                 "placeholderText": "例：サークルの広報活動で、従来のチラシ配布だけでなく、SNSでの動画コンテンツ配信という新しい発想を取り入れました。"
@@ -741,7 +878,6 @@
                         "name": "発信力",
                         "description": "自分の意見をわかりやすく伝える力",
                         "questions": [
-                            
                             {
                                 "questionText": "自分の考えを論理的かつ明確に伝える",
                                 "placeholderText": "例：ゼミの発表で、結論、理由、具体例の順で構成を工夫し、自分の考えを論理的に伝えました。"
@@ -762,14 +898,12 @@
                                 "questionText": "複雑な内容でも簡潔にまとめて伝える",
                                 "placeholderText": "例：長文のレポートの要点を3点に絞り、忙しい教授にも短時間で内容が伝わるように工夫しました。"
                             }
-                            
                         ]
                     },
                     "傾聴力": {
                         "name": "傾聴力",
                         "description": "相手の意見を丁寧に聴く力",
                         "questions": [
-                           
                             {
                                 "questionText": "相手の話に集中し、最後まで聴く",
                                 "placeholderText": "例：友人が悩みを相談してきた際、途中で口を挟まず、相手が話し終わるまで真剣に耳を傾けました。"
@@ -796,7 +930,6 @@
                         "name": "柔軟性",
                         "description": "意見の違いや立場の違いを理解する力",
                         "questions": [
-                            
                             {
                                 "questionText": "異なる意見や価値観を受け入れる",
                                 "placeholderText": "例：国際交流イベントで、文化背景の異なる参加者の意見を尊重し、多様な価値観を受け入れました。"
@@ -823,7 +956,6 @@
                         "name": "状況把握力",
                         "description": "自分と周囲の人々や物事との関係性を理解する力",
                         "questions": [
-                            
                             {
                                 "questionText": "チーム内の自分の役割を理解している",
                                 "placeholderText": "例：サッカー部で、自分のポジションの役割だけでなく、チーム全体の戦略における自分の役割を常に意識してプレーしました。"
@@ -850,7 +982,6 @@
                         "name": "規律性",
                         "description": "社会のルールや人との約束を守る力",
                         "questions": [
-                           
                             {
                                 "questionText": "約束やルールを厳守する",
                                 "placeholderText": "例：友人との約束はもちろん、サークルの会則や大学の規則などを常に守るように心がけています。"
@@ -877,7 +1008,6 @@
                         "name": "ストレスコントロール力",
                         "description": "ストレスの発生源を把握し、対処する力",
                         "questions": [
-                            
                             {
                                 "questionText": "ストレスの原因を冷静に分析できる",
                                 "placeholderText": "例：試験前に強いプレッシャーを感じた際、何が不安の原因なのかを紙に書き出して冷静に分析しました。"
@@ -965,7 +1095,7 @@
             currentCategoryTitle: document.getElementById('currentCategoryTitle'),
             categoryDescription: document.getElementById('categoryDescription'),
             detailedAnalysis: document.getElementById('detailedAnalysis'),
-            jobMatchingResults: document.getElementById('jobMatchingResults'), // 追加
+            jobMatchingResults: document.getElementById('jobMatchingResults'),
             episodeCollection: document.getElementById('episodeCollection'),
             progressBar: document.getElementById('progressBar'),
             progressText: document.getElementById('progressText'),
@@ -978,7 +1108,13 @@
             saveCompleteResults: document.getElementById('saveCompleteResults'),
             showFinalResults: document.getElementById('showFinalResults'),
             profileText: document.getElementById('profileText'),
-            radarChart: document.getElementById('radarChart')
+            radarChart: document.getElementById('radarChart'),
+            generatePrompt: document.getElementById('generatePrompt'),
+            promptContainer: document.getElementById('promptContainer'),
+            promptContent: document.getElementById('promptContent'),
+            copyPrompt: document.getElementById('copyPrompt'),
+            viewPromptDetails: document.getElementById('viewPromptDetails'),
+            copyNotification: document.getElementById('copyNotification')
         };
 
         // イベントリスナーの設定
@@ -993,6 +1129,9 @@
             elements.printResults.addEventListener('click', printResults);
             elements.saveCompleteResults.addEventListener('click', saveCompleteResults);
             elements.showFinalResults.addEventListener('click', showFinalResults);
+            elements.generatePrompt.addEventListener('click', generateSelfPRPrompt);
+            elements.copyPrompt.addEventListener('click', copyPromptToClipboard);
+            elements.viewPromptDetails.addEventListener('click', viewPromptDetails);
         }
 
         // カテゴリ選択画面を表示
@@ -1218,7 +1357,6 @@
                                 const textarea = document.getElementById(`example-${abilityKey}-${qIndex}`);
                                 if (textarea && textarea.value) {
                                     elements.episodeCollection.innerHTML += `
-                                        
                                         <div class="episode-card ${category}">
                                             <div class="episode-title">${ability.name}: ${question.questionText}</div>   
                                             <div class="episode-content">${textarea.value}</div>
@@ -1294,7 +1432,7 @@
             }
         }
 
-                // 総合評価を生成
+        // 総合評価を生成
         function getOverallFeedback(score) {
             if (score >= 4.5) return "あなたの社会人基礎力は非常に高いレベルです。リーダーとしての素質があり、様々な場面で活躍できるでしょう。今後はより高度なスキルや専門知識の習得に取り組むと良いでしょう。";
             if (score >= 4.0) return "あなたの社会人基礎力は高いレベルです。チームの中核メンバーとして活躍できる能力を持っています。さらに成長するために、自分の強みを活かす機会を積極的に探しましょう。";
@@ -1320,11 +1458,11 @@
                     datasets: [{
                         label: 'あなたの能力別スコア',
                         data: chartData,
-                        backgroundColor: 'rgba(153, 102, 255, 0.2)', // 紫系の半透明塗りつぶし
-                        borderColor: 'rgba(153, 102, 255, 1)',     // 紫系の線
+                        backgroundColor: 'rgba(67, 97, 238, 0.2)',
+                        borderColor: 'rgba(67, 97, 238, 1)',
                         borderWidth: 2,
-                        pointBackgroundColor: chartPointColors, // ポイントの色
-                        pointBorderColor: '#fff', // ポイントの枠線
+                        pointBackgroundColor: chartPointColors,
+                        pointBorderColor: '#fff',
                         pointHoverRadius: 7,
                         pointRadius: 5
                     }]
@@ -1349,15 +1487,15 @@
                             },
                             pointLabels: {
                                 font: {
-                                    size: 11, // ラベルが多いので少し小さく
+                                    size: 11,
                                     family: "'Noto Sans JP', sans-serif"
                                 },
-                                padding: 5 // ラベルのパディング調整
+                                padding: 5
                             }
                         }
                     },
                     layout: {
-                        padding: { // チャートエリアのパディング
+                        padding: {
                             top: 10, bottom: 10, left: 10, right: 10
                         }
                     },
@@ -1389,15 +1527,14 @@
 
         // 適職マッチング結果を生成・表示
         function generateJobMatchingResults(abilityScoresMap) {
-            const baseThreshold = 3.5; // おすすめするための基本的なスコア閾値
+            const baseThreshold = 3.5;
             let recommendedJobsHtml = '';
-            const recommendedJobs = new Map(); // 職業名 => { description, matchedAbilities: [{name, score}] }
+            const recommendedJobs = new Map();
 
             for (const abilityName in abilityScoresMap) {
                 const score = abilityScoresMap[abilityName];
                 if (jobMatchingData[abilityName]) {
                     jobMatchingData[abilityName].forEach(job => {
-                        // 職業ごとの閾値があればそれを使用、なければ基本閾値
                         const currentThreshold = job.threshold !== undefined ? job.threshold : baseThreshold;
                         if (score >= currentThreshold) {
                             if (!recommendedJobs.has(job.name)) {
@@ -1416,7 +1553,7 @@
                 recommendedJobs.forEach((jobDetails, jobName) => {
                     let abilitiesHtml = jobDetails.matchedAbilities.map(ab => `<li>${ab.name} (スコア: ${ab.score})</li>`).join('');
                     recommendedJobsHtml += `
-                        <div class="strength-card teamwork"> {/* カテゴリに応じてクラス変更も検討 */}
+                        <div class="strength-card teamwork">
                             <div class="strength-title">${jobName}</div>
                             <p>${jobDetails.description}</p>
                             <p><strong>関連するあなたの強み:</strong></p>
@@ -1430,52 +1567,46 @@
             elements.jobMatchingResults.innerHTML = recommendedJobsHtml;
         }
 
-        // 16進数カラーコードをRGBAに変換
-        function hexToRgba(hex, alpha) {
-            const r = parseInt(hex.slice(1, 3), 16);
-            const g = parseInt(hex.slice(3, 5), 16);
-            const b = parseInt(hex.slice(5, 7), 16);
-            return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-        }
+        // 自己PR文作成プロンプトを生成
+        function generateSelfPRPrompt() {
+            if (state.completedCategories.size < 3) {
+                alert("すべてのカテゴリを完了してください");
+                return;
+            }
 
-        // 結果を印刷
-        function printResults() {
-            window.print();
-        }
-
-        // 完全版結果を保存
-        function saveCompleteResults() {
-            // 1. 結果データをJSON形式で準備
-            const resultData = {
-                date: new Date().toISOString(),
-                scores: {},
-                feedback: document.getElementById('profileText').innerHTML,
-                episodes: [] // エピソードを格納する配列
-            };
+            // 1. スコアが高い項目を抽出 (4.0以上)
+            const highScoreAbilities = [];
+            const episodes = [];
             
-            // 2. スコアデータとエピソードを追加
             for (const category in questionsData) {
                 if (state.responses[category]) {
-                    resultData.scores[category] = {};
                     const categoryData = questionsData[category];
                     
                     for (const abilityKey in categoryData.abilities) {
                         if (state.responses[category][abilityKey]) {
-                            const ability = categoryData.abilities[abilityKey]; // ability を取得
+                            const ability = categoryData.abilities[abilityKey];
                             const abilityAllScores = state.responses[category][abilityKey];
-                            const abilityAvg = ability.questions.length > 0 ?
+                            const abilityAvg = ability.questions.length > 0 ? 
                                 abilityAllScores.reduce((a, b) => a + b, 0) / ability.questions.length : 0;
-                            resultData.scores[category][abilityKey] = abilityAvg;
-
-                            // エピソードも収集
+                            
+                            if (abilityAvg >= 4.0) {
+                                highScoreAbilities.push({
+                                    name: ability.name,
+                                    description: ability.description,
+                                    score: abilityAvg.toFixed(1),
+                                    category: categoryData.name
+                                });
+                            }
+                            
+                            // エピソードを収集
                             ability.questions.forEach((question, qIndex) => {
                                 const textarea = document.getElementById(`example-${abilityKey}-${qIndex}`);
                                 if (textarea && textarea.value) {
-                                    resultData.episodes.push({
-                                        category: categoryData.name, // カテゴリ名
-                                        ability: ability.name,    // 能力要素名
-                                        question: question.questionText, // 質問文
-                                        episode: textarea.value   // 入力されたエピソード
+                                    episodes.push({
+                                        ability: ability.name,
+                                        question: question.questionText,
+                                        content: textarea.value,
+                                        length: textarea.value.length
                                     });
                                 }
                             });
@@ -1484,21 +1615,265 @@
                 }
             }
             
-            // 3. データをJSON文字列に変換
-            const jsonData = JSON.stringify(resultData, null, 2); // null, 2 で整形されたJSON文字列
+            // 2. テキスト記述が長い項目を抽出 (上位3つ)
+            const longEpisodes = [...episodes].sort((a, b) => b.length - a.length).slice(0, 3);
             
-            // 4. JSONデータをファイルとしてダウンロード
-            const blob = new Blob([jsonData], {type: "application/json"});
+            // 3. プロンプトを生成
+            let promptText = "以下の情報を基に、学生として企業に提出する自己PR文を400文字で作成してください。\n\n";
+            promptText += "【強みとする能力】\n";
+            
+            if (highScoreAbilities.length > 0) {
+                highScoreAbilities.forEach(ability => {
+                    promptText += `- ${ability.name} (${ability.category}): ${ability.description} (スコア: ${ability.score})\n`;
+                });
+            } else {
+                promptText += "特に高いスコアの能力はありませんでしたが、以下のエピソードから強みを引き出してください。\n";
+            }
+            
+            promptText += "\n【具体的なエピソード】\n";
+            longEpisodes.forEach((episode, index) => {
+                promptText += `${index + 1}. ${episode.ability}に関するエピソード:\n${episode.content}\n\n`;
+            });
+            
+            promptText += "\n【作成指示】\n";
+            promptText += "- 400文字程度で簡潔にまとめる\n";
+            promptText += "- 具体的な数値や成果があれば含める\n";
+            promptText += "- 企業でどのようにその強みを活かせるかも含める\n";
+            promptText += "- 前向きで意欲的な印象を与える文章にする\n";
+            
+            // プロンプトを表示
+            elements.promptContent.textContent = promptText;
+            elements.promptContainer.classList.remove('hidden');
+            
+            // 状態に保存
+            state.promptData = {
+                highScoreAbilities,
+                longEpisodes,
+                promptText
+            };
+            
+            // スクロールしてプロンプトを表示
+            elements.promptContainer.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        
+       // プロンプトをクリップボードにコピー
+function copyPromptToClipboard() {
+    if (!state.promptData) {
+        alert("プロンプトが生成されていません");
+        return;
+    }
+    
+    // 方法1: 新しいクリップボードAPIを試す
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(state.promptData.promptText).then(() => {
+            showCopyNotification();
+        }).catch(err => {
+            console.error('新しいAPIでのコピー失敗:', err);
+            useFallbackCopyMethod();
+        });
+    } else {
+        // 方法2: 古い方法でフォールバック
+        useFallbackCopyMethod();
+    }
+    
+    // フォールバック方法（古いブラウザ用）
+    function useFallbackCopyMethod() {
+        const textarea = document.createElement('textarea');
+        textarea.value = state.promptData.promptText;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = 0;
+        document.body.appendChild(textarea);
+        textarea.select();
+        
+        try {
+            const successful = document.execCommand('copy');
+            if (successful) {
+                showCopyNotification();
+            } else {
+                throw new Error('コピーコマンドが失敗しました');
+            }
+        } catch (err) {
+            console.error('フォールバック方法でのコピー失敗:', err);
+            alert("自動コピーに失敗しました。以下のテキストを手動でコピーしてください:\n\n" + state.promptData.promptText);
+        } finally {
+            document.body.removeChild(textarea);
+        }
+    }
+}
+
+        // コピー通知を表示
+        function showCopyNotification() {
+            elements.copyNotification.classList.add('show');
+            setTimeout(() => {
+                elements.copyNotification.classList.remove('show');
+            }, 2000);
+        }
+
+        // プロンプト詳細を表示
+        function viewPromptDetails() {
+            if (!state.promptData) return;
+            
+            let detailsText = "【プロンプト生成の根拠】\n\n";
+            detailsText += "1. 高評価の能力要素:\n";
+            
+            if (state.promptData.highScoreAbilities.length > 0) {
+                state.promptData.highScoreAbilities.forEach(ability => {
+                    detailsText += `- ${ability.name} (スコア: ${ability.score}): ${ability.description}\n`;
+                });
+            } else {
+                detailsText += "特に高いスコアの能力はありませんでした。エピソードから強みを引き出します。\n";
+            }
+            
+            detailsText += "\n2. 詳細なエピソード (文字数が多い順):\n";
+            state.promptData.longEpisodes.forEach((episode, index) => {
+                detailsText += `\n${index + 1}. ${episode.ability} (${episode.length}文字):\n`;
+                detailsText += `質問: ${episode.question}\n`;
+                detailsText += `回答: ${episode.content}\n`;
+            });
+            
+            alert(detailsText);
+        }
+
+        // 結果をテキスト形式で保存
+        function saveCompleteResults() {
+            if (state.completedCategories.size < 3) {
+                alert("すべてのカテゴリを完了してください");
+                return;
+            }
+
+            let resultText = "社会人基礎力診断結果\n\n";
+            resultText += `診断日: ${new Date().toLocaleDateString()}\n\n`;
+            
+            // 1. 総合スコア
+            let totalScore = 0;
+            let totalCount = 0;
+            
+            for (const category in questionsData) {
+                if (state.responses[category]) {
+                    const categoryData = questionsData[category];
+                    let categoryScore = 0;
+                    let abilityCount = 0;
+                    
+                    for (const abilityKey in categoryData.abilities) {
+                        if (state.responses[category][abilityKey]) {
+                            const ability = categoryData.abilities[abilityKey];
+                            const abilityAllScores = state.responses[category][abilityKey];
+                            const abilityAvg = ability.questions.length > 0 ? 
+                                abilityAllScores.reduce((a, b) => a + b, 0) / ability.questions.length : 0;
+                            
+                            categoryScore += abilityAvg;
+                            abilityCount++;
+                        }
+                    }
+                    
+                    const categoryAvg = abilityCount > 0 ? categoryScore / abilityCount : 0;
+                    totalScore += categoryAvg;
+                    totalCount++;
+                    
+                    resultText += `■ ${categoryData.name}: ${categoryAvg.toFixed(1)}点\n`;
+                }
+            }
+            
+            const overallAvg = totalCount > 0 ? totalScore / totalCount : 0;
+            resultText += `\n■ 総合スコア: ${overallAvg.toFixed(1)}点\n\n`;
+            
+            // 2. 能力別詳細
+            resultText += "【能力別詳細スコア】\n";
+            for (const category in questionsData) {
+                if (state.responses[category]) {
+                    const categoryData = questionsData[category];
+                    resultText += `\n● ${categoryData.name}\n`;
+                    
+                    for (const abilityKey in categoryData.abilities) {
+                        if (state.responses[category][abilityKey]) {
+                            const ability = categoryData.abilities[abilityKey];
+                            const abilityAllScores = state.responses[category][abilityKey];
+                            const abilityAvg = ability.questions.length > 0 ? 
+                                abilityAllScores.reduce((a, b) => a + b, 0) / ability.questions.length : 0;
+                            
+                            resultText += `- ${ability.name}: ${abilityAvg.toFixed(1)}点\n`;
+                        }
+                    }
+                }
+            }
+            
+            // 3. エピソード
+            resultText += "\n【具体的なエピソード】\n";
+            for (const category in questionsData) {
+                if (state.responses[category]) {
+                    const categoryData = questionsData[category];
+                    
+                    for (const abilityKey in categoryData.abilities) {
+                        if (state.responses[category][abilityKey]) {
+                            const ability = categoryData.abilities[abilityKey];
+                            
+                            ability.questions.forEach((question, qIndex) => {
+                                const textarea = document.getElementById(`example-${abilityKey}-${qIndex}`);
+                                if (textarea && textarea.value) {
+                                    resultText += `\n■ ${ability.name}: ${question.questionText}\n`;
+                                    resultText += `${textarea.value}\n`;
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+            
+            // 4. おすすめ職業 (簡易版)
+            resultText += "\n【おすすめの職業】\n";
+            const abilityScoresMap = {};
+            for (const category in questionsData) {
+                if (state.responses[category]) {
+                    const categoryData = questionsData[category];
+                    
+                    for (const abilityKey in categoryData.abilities) {
+                        if (state.responses[category][abilityKey]) {
+                            const ability = categoryData.abilities[abilityKey];
+                            const abilityAllScores = state.responses[category][abilityKey];
+                            const abilityAvg = ability.questions.length > 0 ? 
+                                abilityAllScores.reduce((a, b) => a + b, 0) / ability.questions.length : 0;
+                            
+                            abilityScoresMap[ability.name] = abilityAvg;
+                        }
+                    }
+                }
+            }
+            
+            const recommendedJobs = new Set();
+            for (const abilityName in abilityScoresMap) {
+                const score = abilityScoresMap[abilityName];
+                if (jobMatchingData[abilityName]) {
+                    jobMatchingData[abilityName].forEach(job => {
+                        const threshold = job.threshold !== undefined ? job.threshold : 3.5;
+                        if (score >= threshold) {
+                            recommendedJobs.add(job.name);
+                        }
+                    });
+                }
+            }
+            
+            if (recommendedJobs.size > 0) {
+                resultText += Array.from(recommendedJobs).join(", ") + "\n";
+            } else {
+                resultText += "特におすすめできる職業は見つかりませんでした\n";
+            }
+            
+            // ファイルとしてダウンロード
+            const blob = new Blob([resultText], {type: "text/plain;charset=utf-8"});
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'social_skills_assessment_results.json';
+            a.download = 'social_skills_assessment_results.txt';
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
+        }
 
-            alert("完全版結果をJSONファイルとして保存しました。");
+        // 結果を印刷
+        function printResults() {
+            window.print();
         }
 
         // ページ読み込み時にイベントリスナーを初期化
