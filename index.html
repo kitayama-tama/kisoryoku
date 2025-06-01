@@ -492,7 +492,97 @@
             margin-top: 15px;
             flex-wrap: wrap;
         }
-        
+        /* このスタイルを追加 */
+.prompt-tabs {
+    display: flex;
+    margin-bottom: 15px;
+    border-bottom: 1px solid var(--medium-gray);
+}
+
+.prompt-tab-btn {
+    padding: 8px 15px;
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    font-weight: 500;
+    color: var(--dark-gray);
+    transition: all 0.3s;
+}
+
+.prompt-tab-btn:hover {
+    color: var(--primary-color);
+}
+
+.prompt-tab-btn.active {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+    font-weight: bold;
+}
+
+.prompt-content {
+    display: none;
+    margin-bottom: 20px;
+}
+
+/* ▼▼▼ この部分だけを追加 ▼▼▼ */
+.prompt-content.active {
+    display: block;
+}
+
+.prompt-actions {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.prompt-actions .btn {
+    margin: 0;
+    flex: 1;
+    min-width: 120px;
+}
+
+#copyCurrentPrompt {
+    background-color: var(--primary-color);
+}
+
+#viewPromptDetails {
+    background-color: var(--light-gray);
+    color: var(--dark-gray);
+}
+/* ▲▲▲ ここまで追加 ▲▲▲ */
+.prompt-content pre {
+    white-space: pre-wrap;
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 5px;
+    border-left: 3px solid var(--primary-color);
+}
+
+.prompt-content h4 {
+    margin-top: 0;
+    color: var(--secondary-color);
+}
+/* 既存のスタイルに追加 */
+.prompt-actions {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.prompt-actions .btn {
+    margin: 0;
+}
+
+#copyCurrentPrompt {
+    min-width: 220px;
+}
+
+#viewPromptDetails {
+    min-width: 120px;
+}
         .copy-notification {
             position: fixed;
             bottom: 20px;
@@ -664,13 +754,10 @@
                 <p>診断結果から、あなたの強みを活かした自己PR文を作成するためのプロンプトを生成できます。</p>
                 <button class="btn btn-accent" id="generatePrompt">プロンプトを生成</button>
                 
-                <div class="prompt-container hidden" id="promptContainer">
-                    <div id="promptContent"></div>
-                    <div class="prompt-actions">
-                        <button class="btn btn-primary" id="copyPrompt">プロンプトをコピー</button>
-                        <button class="btn btn-secondary" id="viewPromptDetails">詳細を見る</button>
-                    </div>
-                </div>
+                <!-- ▼▼▼ この新しいHTMLに差し替え ▼▼▼ -->
+<div class="prompt-container hidden" id="promptContainer">
+    <div id="promptContent"></div>
+</div>
             </div>
             
             <h3>具体的なエピソード集</h3>
@@ -1568,118 +1655,226 @@
         }
 
         // 自己PR文作成プロンプトを生成
-        function generateSelfPRPrompt() {
-            if (state.completedCategories.size < 3) {
-                alert("すべてのカテゴリを完了してください");
-                return;
-            }
-
-            // 1. スコアが高い項目を抽出 (4.0以上)
-            const highScoreAbilities = [];
-            const episodes = [];
-            
-            for (const category in questionsData) {
-                if (state.responses[category]) {
-                    const categoryData = questionsData[category];
-                    
-                    for (const abilityKey in categoryData.abilities) {
-                        if (state.responses[category][abilityKey]) {
-                            const ability = categoryData.abilities[abilityKey];
-                            const abilityAllScores = state.responses[category][abilityKey];
-                            const abilityAvg = ability.questions.length > 0 ? 
-                                abilityAllScores.reduce((a, b) => a + b, 0) / ability.questions.length : 0;
-                            
-                            if (abilityAvg >= 4.0) {
-                                highScoreAbilities.push({
-                                    name: ability.name,
-                                    description: ability.description,
-                                    score: abilityAvg.toFixed(1),
-                                    category: categoryData.name
-                                });
-                            }
-                            
-                            // エピソードを収集
-                            ability.questions.forEach((question, qIndex) => {
-                                const textarea = document.getElementById(`example-${abilityKey}-${qIndex}`);
-                                if (textarea && textarea.value) {
-                                    episodes.push({
-                                        ability: ability.name,
-                                        question: question.questionText,
-                                        content: textarea.value,
-                                        length: textarea.value.length
-                                    });
-                                }
-                            });
-                        }
-                    }
-                }
-            }
-            
-            // 2. テキスト記述が長い項目を抽出 (上位3つ)
-            const longEpisodes = [...episodes].sort((a, b) => b.length - a.length).slice(0, 3);
-            
-            // 3. プロンプトを生成
-            let promptText = "以下の情報を基に、学生として企業に提出する自己PR文を400文字で作成してください。\n\n";
-            promptText += "【強みとする能力】\n";
-            
-            if (highScoreAbilities.length > 0) {
-                highScoreAbilities.forEach(ability => {
-                    promptText += `- ${ability.name} (${ability.category}): ${ability.description} (スコア: ${ability.score})\n`;
-                });
-            } else {
-                promptText += "特に高いスコアの能力はありませんでしたが、以下のエピソードから強みを引き出してください。\n";
-            }
-            
-            promptText += "\n【具体的なエピソード】\n";
-            longEpisodes.forEach((episode, index) => {
-                promptText += `${index + 1}. ${episode.ability}に関するエピソード:\n${episode.content}\n\n`;
-            });
-            
-            promptText += "\n【作成指示】\n";
-            promptText += "- 400文字程度で簡潔にまとめる\n";
-            promptText += "- 具体的な数値や成果があれば含める\n";
-            promptText += "- 企業でどのようにその強みを活かせるかも含める\n";
-            promptText += "- 前向きで意欲的な印象を与える文章にする\n";
-            
-            // プロンプトを表示
-            elements.promptContent.textContent = promptText;
-            elements.promptContainer.classList.remove('hidden');
-            
-            // 状態に保存
-            state.promptData = {
-                highScoreAbilities,
-                longEpisodes,
-                promptText
-            };
-            
-            // スクロールしてプロンプトを表示
-            elements.promptContainer.scrollIntoView({ behavior: 'smooth' });
-        }
-
-        // プロンプトをクリップボードにコピー
-function copyPromptToClipboard() {
-    if (!state.promptData) {
-        alert("プロンプトが生成されていません");
+        // この関数を以下のように置き換える
+function generateSelfPRPrompt() {
+    if (state.completedCategories.size < 3) {
+        alert("すべてのカテゴリを完了してください");
         return;
     }
+
+    // 1. すべての能力をスコア順にソート
+    const allAbilities = [];
+    const episodes = [];
     
-    // 方法1: 新しいクリップボードAPIを試す
-    if (navigator.clipboard) {
-        navigator.clipboard.writeText(state.promptData.promptText).then(() => {
-            showCopyNotification();
-        }).catch(err => {
-            console.error('新しいAPIでのコピー失敗:', err);
-            useFallbackCopyMethod();
-        });
-    } else {
-        // 方法2: 古い方法でフォールバック
-        useFallbackCopyMethod();
+    for (const category in questionsData) {
+        if (state.responses[category]) {
+            const categoryData = questionsData[category];
+            
+            for (const abilityKey in categoryData.abilities) {
+                if (state.responses[category][abilityKey]) {
+                    const ability = categoryData.abilities[abilityKey];
+                    const abilityAllScores = state.responses[category][abilityKey];
+                    const abilityAvg = ability.questions.length > 0 ? 
+                        abilityAllScores.reduce((a, b) => a + b, 0) / ability.questions.length : 0;
+                    
+                    allAbilities.push({
+                        name: ability.name,
+                        description: ability.description,
+                        score: abilityAvg,
+                        category: categoryData.name,
+                        key: abilityKey
+                    });
+                    
+                    // エピソードを収集
+                    ability.questions.forEach((question, qIndex) => {
+                        const textarea = document.getElementById(`example-${abilityKey}-${qIndex}`);
+                        if (textarea && textarea.value) {
+                            episodes.push({
+                                ability: ability.name,
+                                abilityKey: abilityKey,
+                                question: question.questionText,
+                                content: textarea.value,
+                                length: textarea.value.length
+                            });
+                        }
+                    });
+                }
+            }
+        }
     }
     
-    // フォールバック方法（古いブラウザ用）
-    function useFallbackCopyMethod() {
+    // スコアの高い順にソート
+    allAbilities.sort((a, b) => b.score - a.score);
+    
+    // 2. 上位3つの能力を取得（スコアが0の場合は除外）
+    const topAbilities = allAbilities.filter(a => a.score > 0).slice(0, 3);
+    
+    // 3. 各能力に対応する最適なエピソードを選択
+    topAbilities.forEach(ability => {
+        // 該当能力のエピソードを抽出
+        const abilityEpisodes = episodes.filter(ep => ep.abilityKey === ability.key);
+        // 文字数が多い順にソート
+        ability.bestEpisode = abilityEpisodes.sort((a, b) => b.length - a.length)[0];
+    });
+    
+    // 4. 能力ごとに個別のプロンプトを生成
+    const individualPrompts = topAbilities.map((ability, index) => {
+        return generateSingleAbilityPrompt(ability, index + 1);
+    });
+    
+    // 5. 統合型プロンプトも生成（既存機能維持）
+    const combinedPrompt = generateCombinedPrompt(topAbilities, episodes);
+    
+    // 状態に保存
+    state.promptData = {
+        topAbilities,
+        individualPrompts: individualPrompts,
+        combinedPrompt
+    };
+    
+    // プロンプトを表示
+    displayPrompts(individualPrompts, combinedPrompt);
+    
+    // スクロールしてプロンプトを表示
+    elements.promptContainer.scrollIntoView({ behavior: 'smooth' });
+}
+
+// 新しいヘルパー関数を追加
+function generateSingleAbilityPrompt(ability, rank) {
+    let promptText = `【${rank}位の能力「${ability.name}」に特化した自己PR作成プロンプト】\n\n`;
+    promptText += `以下の情報を基に、「${ability.name}」を強みとした自己PR文を200-300文字で作成してください。\n\n`;
+    promptText += `【強みの詳細】\n`;
+    promptText += `- 能力名: ${ability.name}\n`;
+    promptText += `- カテゴリ: ${ability.category}\n`;
+    promptText += `- 説明: ${ability.description}\n`;
+    promptText += `- スコア: ${ability.score.toFixed(1)}/5.0\n\n`;
+    
+    if (ability.bestEpisode) {
+        promptText += `【具体的なエピソード】\n`;
+        promptText += `質問: ${ability.bestEpisode.question}\n`;
+        promptText += `回答: ${ability.bestEpisode.content}\n\n`;
+    }
+    
+    promptText += `【作成指示】\n`;
+    promptText += `- 200-300文字程度で簡潔にまとめる\n`;
+    promptText += `- 「${ability.name}」を強みとして明確に表現する\n`;
+    promptText += `- エピソードを具体的に活用する\n`;
+    promptText += `- 企業でどのようにこの能力を活かせるか含める\n`;
+    promptText += `- 前向きで意欲的な印象を与える文章にする\n`;
+    
+    return promptText;
+}
+
+function generateCombinedPrompt(topAbilities, episodes) {
+    // 既存の統合型プロンプト生成ロジック（現在の機能を維持）
+    let promptText = "以下の情報を基に、学生として企業に提出する自己PR文を400文字で作成してください。\n\n";
+    promptText += "【強みとする能力】\n";
+    
+    if (topAbilities.length > 0) {
+        topAbilities.forEach(ability => {
+            promptText += `- ${ability.name} (${ability.category}): ${ability.description} (スコア: ${ability.score.toFixed(1)})\n`;
+        });
+    } else {
+        promptText += "特に高いスコアの能力はありませんでしたが、以下のエピソードから強みを引き出してください。\n";
+    }
+    
+    // 長いエピソード上位3つを選択
+    const longEpisodes = [...episodes].sort((a, b) => b.length - a.length).slice(0, 3);
+    
+    promptText += "\n【具体的なエピソード】\n";
+    longEpisodes.forEach((episode, index) => {
+        promptText += `${index + 1}. ${episode.ability}に関するエピソード:\n${episode.content}\n\n`;
+    });
+    
+    promptText += "\n【作成指示】\n";
+    promptText += "- 400文字程度で簡潔にまとめる\n";
+    promptText += "- 具体的な数値や成果があれば含める\n";
+    promptText += "- 企業でどのようにその強みを活かせるかも含める\n";
+    promptText += "- 前向きで意欲的な印象を与える文章にする\n";
+    
+    return promptText;
+}
+        // この関数を追加
+    // ▼▼▼ この関数全体を選択して削除し、以下で完全置き換え ▼▼▼
+  
+function displayPrompts(individualPrompts, combinedPrompt) {
+    // プロンプトHTML生成
+    const promptHTML = `
+        <div class="prompt-tabs">
+            <button class="prompt-tab-btn active" data-tab="combined">統合型自己PR</button>
+            ${individualPrompts.map((_, i) => `
+                <button class="prompt-tab-btn" data-tab="ability-${i}">${i+1}位の能力</button>
+            `).join('')}
+        </div>
+        <div class="prompt-content active" id="prompt-combined">
+            <pre>${combinedPrompt}</pre>
+        </div>
+        ${individualPrompts.map((prompt, i) => `
+            <div class="prompt-content" id="prompt-ability-${i}">
+                <pre>${prompt}</pre>
+            </div>
+        `).join('')}
+        <div class="prompt-actions">
+            <button class="btn btn-primary" id="copyCurrentPrompt">コピー</button>
+            <button class="btn btn-secondary" id="viewPromptDetails">詳細</button>
+        </div>
+    `;
+
+    // DOM更新
+    elements.promptContent.innerHTML = promptHTML;
+    elements.promptContainer.classList.remove('hidden');
+
+    // イベントリスナー設定関数
+    const setupEventListeners = () => {
+        // タブ切り替え
+        document.querySelectorAll('.prompt-tab-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const tabId = this.dataset.tab;
+                document.querySelectorAll('.prompt-content').forEach(el => {
+                    el.classList.toggle('active', el.id === `prompt-${tabId}`);
+                });
+                document.querySelectorAll('.prompt-tab-btn').forEach(b => {
+                    b.classList.toggle('active', b === this);
+                });
+            });
+        });
+
+        // コピーボタン
+        document.getElementById('copyCurrentPrompt').addEventListener('click', () => {
+            const activeContent = document.querySelector('.prompt-content.active pre')?.textContent;
+            if (activeContent) {
+                navigator.clipboard.writeText(activeContent)
+                    .then(() => alert('プロンプトをコピーしました！'))
+                    .catch(err => console.error('コピー失敗:', err));
+            }
+        });
+
+        // 詳細ボタン
+        document.getElementById('viewPromptDetails').addEventListener('click', viewPromptDetails);
+    };
+
+    // イベントリスナー設定を実行（DOM更新を待つ）
+    setTimeout(setupEventListeners, 50);
+}
+// ▲▲▲ ここまでが新しい関数 ▲▲▲
+
+        // プロンプトをクリップボードにコピー
+        // ✅ この新しい関数を追加
+function copyToClipboard(text) {
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(() => {
+            showCopyNotification();
+        }).catch(err => {
+            console.error('コピー失敗:', err);
+            useFallbackCopyMethod(text);
+        });
+    } else {
+        useFallbackCopyMethod(text);
+    }
+    
+    function useFallbackCopyMethod(textToCopy) {
         const textarea = document.createElement('textarea');
-        textarea.value = state.promptData.promptText;
+        textarea.value = textToCopy;
         textarea.style.position = 'fixed';
         textarea.style.opacity = 0;
         document.body.appendChild(textarea);
@@ -1687,14 +1882,11 @@ function copyPromptToClipboard() {
         
         try {
             const successful = document.execCommand('copy');
-            if (successful) {
-                showCopyNotification();
-            } else {
-                throw new Error('コピーコマンドが失敗しました');
-            }
+            if (!successful) throw new Error('コピーコマンド失敗');
+            showCopyNotification();
         } catch (err) {
-            console.error('フォールバック方法でのコピー失敗:', err);
-            alert("自動コピーに失敗しました。以下のテキストを手動でコピーしてください:\n\n" + state.promptData.promptText);
+            console.error('フォールバックコピー失敗:', err);
+            alert("自動コピーに失敗しました。以下のテキストを手動でコピーしてください:\n\n" + textToCopy);
         } finally {
             document.body.removeChild(textarea);
         }
@@ -1710,29 +1902,56 @@ function copyPromptToClipboard() {
         }
 
         // プロンプト詳細を表示
-        function viewPromptDetails() {
-            if (!state.promptData) return;
-            
-            let detailsText = "【プロンプト生成の根拠】\n\n";
-            detailsText += "1. 高評価の能力要素:\n";
-            
-            if (state.promptData.highScoreAbilities.length > 0) {
-                state.promptData.highScoreAbilities.forEach(ability => {
-                    detailsText += `- ${ability.name} (スコア: ${ability.score}): ${ability.description}\n`;
-                });
-            } else {
-                detailsText += "特に高いスコアの能力はありませんでした。エピソードから強みを引き出します。\n";
-            }
-            
-            detailsText += "\n2. 詳細なエピソード (文字数が多い順):\n";
-            state.promptData.longEpisodes.forEach((episode, index) => {
-                detailsText += `\n${index + 1}. ${episode.ability} (${episode.length}文字):\n`;
-                detailsText += `質問: ${episode.question}\n`;
-                detailsText += `回答: ${episode.content}\n`;
-            });
-            
-            alert(detailsText);
+        // viewPromptDetails関数を以下のように更新
+function viewPromptDetails() {
+    if (!state.promptData) return;
+    
+    let detailsText = "【プロンプト生成の根拠】\n\n";
+    detailsText += "1. 上位3つの能力:\n";
+    
+    state.promptData.topAbilities.forEach((ability, index) => {
+        detailsText += `\n${index + 1}. ${ability.name} (スコア: ${ability.score.toFixed(1)}): ${ability.description}\n`;
+        if (ability.bestEpisode) {
+            detailsText += `使用エピソード: ${ability.bestEpisode.question}\n`;
+            detailsText += `エピソード長: ${ability.bestEpisode.length}文字\n`;
         }
+    });
+    
+    detailsText += "\n2. 詳細なエピソード:\n";
+    const allEpisodes = [];
+    for (const category in questionsData) {
+        if (state.responses[category]) {
+            const categoryData = questionsData[category];
+            for (const abilityKey in categoryData.abilities) {
+                if (state.responses[category][abilityKey]) {
+                    const ability = categoryData.abilities[abilityKey];
+                    ability.questions.forEach((question, qIndex) => {
+                        const textarea = document.getElementById(`example-${abilityKey}-${qIndex}`);
+                        if (textarea && textarea.value) {
+                            allEpisodes.push({
+                                ability: ability.name,
+                                question: question.questionText,
+                                content: textarea.value,
+                                length: textarea.value.length
+                            });
+                        }
+                    });
+                }
+            }
+        }
+    }
+    
+    // 長い順にソート
+    const sortedEpisodes = [...allEpisodes].sort((a, b) => b.length - a.length);
+    
+    sortedEpisodes.forEach((episode, index) => {
+        detailsText += `\n${index + 1}. ${episode.ability} (${episode.length}文字):\n`;
+        detailsText += `質問: ${episode.question}\n`;
+        detailsText += `回答: ${episode.content}\n`;
+    });
+    
+    alert(detailsText);
+}
 
         // 結果をテキスト形式で保存
         function saveCompleteResults() {
